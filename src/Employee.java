@@ -1,14 +1,22 @@
+import java.math.BigDecimal;
+
 
 public class Employee {
 	
 	private int id;					//Employee ID
 	private String forename;		//Employee Forename
 	private String lastname;		//Employee Surname
-	private float salary;			//Employee Salary
+	private BigDecimal salary;			//Employee Salary
 	
 	public Employee(int newId){
-		this();
 		setId(newId);
+	}
+	
+	public Employee(int newId, String eForename, String eLastname, BigDecimal eSalary) {
+		this(newId);
+		this.forename = eForename;
+		this.lastname = eLastname;
+		this.salary = eSalary;
 	}
 	
 	private int getId() {
@@ -35,11 +43,11 @@ public class Employee {
 		this.lastname = lastname;
 	}
 	
-	private float getSalary() {
+	private BigDecimal getSalary() {
 		return salary;
 	}
 	
-	private void setSalary(float salary) {
+	private void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
 

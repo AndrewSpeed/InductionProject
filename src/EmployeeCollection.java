@@ -20,7 +20,7 @@ public class EmployeeCollection<E> extends ArrayList<E> {
 				BigDecimal empSalary = results.getBigDecimal(4);
 				
 				Employee emp = new Employee(empID, empForename, empSurname, empSalary);
-				this.add(emp);
+				this.add((E) emp);
 			}
 		} catch (SQLException e) {
 			System.err.println("SQL exception: " + e.getMessage());

@@ -8,35 +8,25 @@ public class Main {
 	
 	static Connection conn;
 	static Statement stmt;
-	public static void main(String[] args){
+	static String url = "jdbc:mysql://localhost:3306/project_employees";
+	
+	
+	public static void main(String[] args){	
 		
-		String url = "jdbc:mysql://localhost:3306/project_employees";
 		
-		
-		//load the JDBC driver
-		try{
-			Class.forName("com.mysql.jdbc.Driver");
-			
-		}catch(ClassNotFoundException e){
-			System.err.print(e.getMessage());
-		}
+		//load the JDBC driver		
+		loadJDBCdriver();
 		
 		//setting up connection
-		try{
-			
-			conn = DriverManager.getConnection(url, "root", "password");		
-		
-		}
-		catch(SQLException e){
-			System.err.print(e.getMessage());
-		}
+		setUpConnection();
 		
 		
 		try{
 		
 		stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("Select * from employees");
+		ResultSet rs = stmt.executeQuery(selectQuery(1));
 		
+		//ArrayList results = new ArrayList(rs);
 		while(rs.next()){
 			
             int customerID = rs.getInt("id");
@@ -54,5 +44,43 @@ public class Main {
 		
 		
 		}//psvm
+	
+	
+	/*
+	 * selectQuery method to run select query using different userID's
+	 */
+	public static String selectQuery(int userID){
+		String queryString = ("Select * from employees WHERE id =" + userID);
+		return queryString;
+	}
+	
+	
+	/*
+	 * loadJDBCdriver method loads the JDBC driver
+	 */
+	public static void loadJDBCdriver(){
+		//load the JDBC driver
+				try{
+					Class.forName("com.mysql.jdbc.Driver");
+					
+				}catch(ClassNotFoundException e){
+					System.err.print(e.getMessage());
+				}	
+	}
+	
+	/*
+	 * setUpConnection method sets up the connection to the database via a URL
+	 */
+	public static void setUpConnection(){
+		//setting up connection
+		try{
+					
+			conn = DriverManager.getConnection(url, "root", "password");		
+				
+			}
+		catch(SQLException e){
+					System.err.print(e.getMessage());
+			}
+	}
 	
 }//class

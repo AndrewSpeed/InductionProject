@@ -24,7 +24,7 @@ public class Main {
 		try{
 		
 		stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery(selectQuery(1));
+		ResultSet rs = stmt.executeQuery("SELECT * FROM employees");
 		
 		//ArrayList results = new ArrayList(rs);
 		while(rs.next()){
@@ -46,10 +46,19 @@ public class Main {
 		}//psvm
 	
 	
+	
+	/*
+	 * selectAllEmployees method to return all Employees
+	 */
+	public static String selectAllEmployees(){
+		String queryString = ("Select * from employees");
+		return queryString;
+	}
+	
 	/*
 	 * selectQuery method to run select query using different userID's
 	 */
-	public static String selectQuery(int userID){
+	public static String selectEmployeeByID(int userID){
 		String queryString = ("Select * from employees WHERE id =" + userID);
 		return queryString;
 	}

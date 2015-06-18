@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
-
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Employee {
 	
@@ -45,6 +46,35 @@ public class Employee {
 	
 	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
+	}
+	
+	public static int validateUserID(Scanner input){
+		int newInt = -1;
+		try{
+		 newInt = input.nextInt();
+		}
+		catch(InputMismatchException e)
+		{
+			System.out.println("Wrong input. Closing system.");
+			System.exit(1);
+		}
+		return newInt;
+		
+		/*while(!input.hasNextInt()){
+            System.out.println("That's not a number!");
+            return validateUserID(input);
+        }//while
+		return input.nextInt();*/
+	}
+	
+	public static String validateStringInput(String name){
+		while ((name.length() > 30) || (name.length() < 1) || (name.matches(".*\\d.*"))) {
+			System.out.println("Name is not valid. Please re-enter: ");
+			name = Main.input.next();
+			//Main.input.next();
+		}//while
+		
+		return name;	
 	}
 
 }

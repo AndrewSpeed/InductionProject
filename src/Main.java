@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+
 public class Main {
 
 	static Connection conn;
@@ -100,27 +101,16 @@ public class Main {
 		System.out
 				.println("Please enter a forename up to 30 characters long: ");
 		String fnametemp = input.next();
-
-		while ((fnametemp.length() > 30) || (fnametemp.length() < 1)) {
-			System.out.println("Name is not a valid length. Please re-enter: ");
-			fnametemp = input.nextLine();
-		}
+		Employee.validateStringInput(fnametemp);
 
 		System.out.println("Please enter a surname up to 30 characters long: ");
 		String snametemp = input.next();
-		while ((snametemp.length() > 30) || (snametemp.length() < 1)) {
-			System.out.println("Name is not a valid length. Please re-enter: ");
-			snametemp = input.nextLine();
-		}
+		Employee.validateStringInput(snametemp);
 
 		System.out
-				.println("Please choose a salary ID from the following list : \n1\n2\n3\n ");
-		int salaryIDtemp = input.nextInt();
-		if (salaryIDtemp < 1 || salaryIDtemp > 3) {
-			System.out
-					.println("Salary is not from the list shown. Please re-enter: ");
-			salaryIDtemp = input.nextInt();
-		}
+				.println("Please enter a salary: ");
+		Employee.validateUserID(input);
+		
 	}
 
 	/*

@@ -7,7 +7,7 @@ public class Employee {
 	private int id;					//Employee ID
 	private String forename;		//Employee Forename
 	private String lastname;		//Employee Surname
-	private BigDecimal salary;			//Employee Salary
+	private BigDecimal salary;		//Employee Salary
 	
 	public Employee(String eForename, String eLastname, BigDecimal eSalary) {
 		this.forename = eForename;
@@ -63,21 +63,13 @@ public class Employee {
 			System.exit(1);
 		}
 		return newInt;
-		
-		/*while(!input.hasNextInt()){
-            System.out.println("That's not a number!");
-            return validateUserID(input);
-        }//while
-		return input.nextInt();*/
 	}
 	
 	public static String validateStringInput(String name){
-		while ((name.length() > 30) || (name.length() < 1) || (name.matches(".*\\d.*"))) {
-			System.out.println("Name is not valid. Please re-enter: ");
+		while ((name.length() > 30) && (name.length() < 1)) {
+			System.out.println("Only names between 1 and 30 characters supported, please try again: ");
 			name = Main.input.next();
-			//Main.input.next();
-		}//while
-		
+		}
 		return name;	
 	}
 	
@@ -86,7 +78,7 @@ public class Employee {
 		try {
 			sal = input.nextBigDecimal();
 		} catch (InputMismatchException e) {
-			System.out.println("Invalid input. Exiting.");
+			System.out.println("Invalid salary. Exiting.");
 			System.exit(1);
 		}
 		return sal;

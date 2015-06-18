@@ -10,22 +10,25 @@ import java.util.Scanner;
 
 public class Main {
 
-	static Connection conn;
-	static Statement stmt;
-	static String url = "jdbc:mysql://localhost:3306/project_employees";
+	private static Connection conn;
+	private static Statement stmt;
+	private static final String URL = "jdbc:mysql://localhost:3306/project_employees";
 
+	// default persmissions as this should only be shared within the package
 	static Scanner input = new Scanner(System.in);
 
 	public static void main(String[] args) {
+		runApplication();
+	}
 
-		// Scanner input = new Scanner(System.in);
-
+	public static void runApplication() {
 		// load the JDBC driver
 		loadJDBCdriver();
 
 		// setting up connection
 		setUpConnection();
 
+		// display welcome message
 		System.out
 				.println("\nWELCOME TO THE EMPLOYEE MANAGEMENT SYSTEM\n*** Main Menu ***\n");
 
@@ -34,54 +37,21 @@ public class Main {
 			switch (option) {
 
 			case 1:
-				// select all employees
 				selectAllEmployees();
-
 				break;
 			case 2:
-				// search by ID
-
-				try {
-					stmt = conn.createStatement();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				System.out.println("Please enter the user ID: ");
-				int userID = input.nextInt();
-
-				try {
-					ResultSet rs = stmt
-							.executeQuery(selectEmployeeByID(userID));
-					while (rs.next()) {
-						int empID = rs.getInt("ID");
-						String fname = rs.getString("forename");
-						String sname = rs.getString("surname");
-						int salary = rs.getInt("salary");
-						System.out.println("Emp ID\tForename Surname Salary\n");
-						System.out.println(empID + "\t" + fname + "\t" + sname
-								+ "\t" + salary + "\n");
-					}
-
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+				findEmployeeById();
 				break;
 			case 3:
-				// add employee
 				addEmployee();
 				break;
-
 			default:
 				System.out.println("Invalid option selection, exiting.");
 				System.exit(1);
 				break;
 			}
 		}
-
-	}// psvm
+	}
 
 	// METHODS
 
@@ -117,30 +87,40 @@ public class Main {
 
 	public static void createEmployeeInDB(String forename, String surname,
 			BigDecimal salary) {
-		String sqlTemplate = "INSERT INTO salaries(salary) VALUES (?); "
-				+ "INSERT INTO employees(forename, surname, salaryid) VALUES (?, ?, LAST_INSERT_ID()); ";
+		String salaryInsert = "INSERT INTO salaries(salary) VALUES (?);";
+		String employeeInsert = "INSERT INTO employees(forename, surname, salaryid) VALUES (?, ?, ?); ";
 
 		PreparedStatement sql;
 		try {
-			sql = conn.prepareStatement(sqlTemplate);
+			// return the id of the inserted row
+			sql = conn.prepareStatement(salaryInsert,
+					Statement.RETURN_GENERATED_KEYS);
 			sql.setBigDecimal(1, salary);
-			sql.setString(2, forename);
-			sql.setString(3, surname);
-			System.out.println(sql);
 			sql.executeUpdate();
+
+			// move the pointer to the first (and only) primary key
+			ResultSet rs = sql.getGeneratedKeys();
+			rs.next();
+
+			// insert values into the statement
+			sql = conn.prepareStatement(employeeInsert);
+			sql.setString(1, forename);
+			sql.setString(2, surname);
+			int salId = rs.getInt(1);
+			sql.setInt(3, salId);
+			sql.executeUpdate();
+
 			System.out.println("User added successfully :).");
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+			System.err.println("SQL Error: " + e.getMessage());
 		}
-		
+
 	}
 
 	/*
 	 * selectAllEmployees method to return all Employees
 	 */
 	public static void selectAllEmployees() {
-		// String queryString = ("Select * from employees");
-		// return queryString;
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt
@@ -149,22 +129,46 @@ public class Main {
 							+ "INNER JOIN salaries ON employees.salaryid=salaries.salaryid;");
 			EmployeeCollection<Employee> employees = new EmployeeCollection(rs);
 			for (Employee e : employees) {
-				System.out.println(String.format("%d %s %s %.2f", e.getId(),
+				System.out.println(String.format("[%d] %s %s\tSalary: %.2f", e.getId(),
 						e.getForename(), e.getLastname(), e.getSalary()));
 			}
 		} catch (SQLException e) {
-			e.getMessage();
+			System.err.println(e.getMessage());
 		}
 	}
+	
+	public static void findEmployeeById() {
+		System.out.println("Please enter the user ID: ");
 
-	/*
-	 * selectQuery method to run select query using different userID's
-	 */
-	public static String selectEmployeeByID(int userID) {
-		String queryString = ("SELECT id, forename, surname, salary " + 
-							  "FROM employees INNER JOIN salaries ON employees.salaryid=salaries.salaryid " +
-							  "WHERE id=" + userID + ";");
-		return queryString;
+		int userID = 0;
+		try {
+			userID = input.nextInt();
+		} catch (InputMismatchException e) {
+			System.err.println("Invalid user id provided, exiting.");
+		}
+
+		String queryString = ("SELECT id, forename, surname, salary "
+				+ "FROM employees INNER JOIN salaries ON employees.salaryid=salaries.salaryid "
+				+ "WHERE id=?;");
+		
+		try {
+			stmt = conn.prepareStatement(queryString);
+			((PreparedStatement) stmt).setInt(1, userID);
+			ResultSet rs = ((PreparedStatement) stmt).executeQuery();
+
+			while (rs.next()) {
+				int empID = rs.getInt("ID");
+				String fname = rs.getString("forename");
+				String sname = rs.getString("surname");
+				int salary = rs.getInt("salary");
+				
+				System.out.println("Emp ID\tForename Surname Salary\n");
+				System.out.println(empID + "\t" + fname + "\t" + sname
+						+ "\t" + salary + "\n");
+			}
+		} catch (SQLException e1) {
+			System.err.println(e1.getMessage());
+		}
 	}
 
 	/*
@@ -187,7 +191,7 @@ public class Main {
 		// setting up connection
 		try {
 
-			conn = DriverManager.getConnection(url, "root", "Kainos");
+			conn = DriverManager.getConnection(URL, "root", "Kainos");
 
 		} catch (SQLException e) {
 			System.err.print(e.getMessage());

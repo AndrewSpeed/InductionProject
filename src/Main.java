@@ -117,10 +117,8 @@ public class Main {
 
 	public static void createEmployeeInDB(String forename, String surname,
 			BigDecimal salary) {
-		String sqlTemplate = "BEGIN; "
-				+ "INSERT INTO salaries(salary) VALUES (?); "
-				+ "INSERT INTO employees(forename, surname, salaryid) VALUES (?, ?, LAST_INSERT_ID()); "
-				+ "COMMIT;";
+		String sqlTemplate = "INSERT INTO salaries(salary) VALUES (?); "
+				+ "INSERT INTO employees(forename, surname, salaryid) VALUES (?, ?, LAST_INSERT_ID()); ";
 
 		PreparedStatement sql;
 		try {
@@ -129,11 +127,12 @@ public class Main {
 			sql.setString(2, forename);
 			sql.setString(3, surname);
 			System.out.println(sql);
-			sql.executeQuery();
+			sql.executeUpdate();
+			System.out.println("User added successfully :).");
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
-		System.out.println("User added successfully :).");
+		
 	}
 
 	/*

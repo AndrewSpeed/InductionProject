@@ -19,35 +19,35 @@ public class Employee {
 		this.salary = eSalary;
 	}
 	
-	private int getId() {
+	public int getId() {
 		return id;
 	}
 	
-	private void setId(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
-	private String getForename() {
+	public String getForename() {
 		return forename;
 	}
 	
-	private void setForename(String forename) {
+	public void setForename(String forename) {
 		this.forename = forename;
 	}
 	
-	private String getLastname() {
+	public String getLastname() {
 		return lastname;
 	}
 	
-	private void setLastname(String lastname) {
+	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
 	
-	private BigDecimal getSalary() {
+	public BigDecimal getSalary() {
 		return salary;
 	}
 	
-	private void setSalary(BigDecimal salary) {
+	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
 

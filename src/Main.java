@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+
 public class Main {
 
 	private static Connection conn;
@@ -191,7 +192,7 @@ public class Main {
 		// setting up connection
 		try {
 
-			conn = DriverManager.getConnection(URL, "root", "Kainos");
+			conn = DriverManager.getConnection(URL, "root", "password");
 
 		} catch (SQLException e) {
 			System.err.print(e.getMessage());

@@ -63,9 +63,9 @@ DROP TABLE IF EXISTS `salaries`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `salaries` (
   `salaryid` int(11) NOT NULL AUTO_INCREMENT,
-  `salary` decimal(11,2) DEFAULT NULL,
+  `salary` decimal(11,2) NOT NULL,
   PRIMARY KEY (`salaryid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

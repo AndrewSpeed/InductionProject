@@ -16,6 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Create project_employees database
+--
+CREATE DATABASE project_employees;
+USE project_employees;
+
+--
 -- Table structure for table `employees`
 --
 

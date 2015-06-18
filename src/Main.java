@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -7,7 +8,7 @@ public class Main {
 	
 	public static void main(String[] args){
 		
-		String url = "database url";
+		String url = "jdbc:mysql://localhost:3306/project_employees";
 		Connection conn;
 		Statement stmt;
 		
@@ -22,8 +23,9 @@ public class Main {
 		//setting up connection
 		try{
 			
-			conn = DriverManager.getConnection(url, userID, password);
+			conn = DriverManager.getConnection(url, "root", "password");
 			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("Select * from employees");
 				
 		}
 		catch(SQLException e){

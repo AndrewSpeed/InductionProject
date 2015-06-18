@@ -8,12 +8,8 @@ public class Employee {
 	private String lastname;		//Employee Surname
 	private BigDecimal salary;			//Employee Salary
 	
-	public Employee(int newId){
-		setId(newId);
-	}
-	
 	public Employee(int newId, String eForename, String eLastname, BigDecimal eSalary) {
-		this(newId);
+		this.id = newId;
 		this.forename = eForename;
 		this.lastname = eLastname;
 		this.salary = eSalary;

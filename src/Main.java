@@ -51,13 +51,21 @@ public class Main {
 				try {
 					ResultSet rs = stmt
 							.executeQuery(selectEmployeeByID(userID));
+					while (rs.next()){
+					 int empID = rs.getInt("ID");
+					 String fname = rs.getString("forename");
+					 String sname = rs.getString("surname");
+					 int salaryID = rs.getInt("salaryid");
+					 System.out.println("Emp ID\tForename Surname Salary ID\n");
+					  System.out.println(empID + "\t" + fname +
+                              "\t" + sname + "\t" + salaryID + "\n");
+					}
+
 
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-				
-				
+				}			   
 
 				break;
 			case 3:

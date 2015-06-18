@@ -23,7 +23,7 @@ public class EmployeeCollection<E> extends ArrayList<E> {
 				this.add(emp);
 			}
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+			System.err.println("SQL exception: " + e.getMessage());
 		}
 		
 	}
